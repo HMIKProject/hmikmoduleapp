@@ -1,0 +1,22 @@
+Website ini menggunakan arsitektur Serverless dengan Google Drive sebagai basis data utamanya.
+    - Frontend: Vue.js 3 (Vite) + Tailwind CSS.
+    - Backend API: Google Apps Script (GAS) sebagai jembatan (proxy) antara web dan Google Drive API.
+    - Storage: Google Drive (Folder terstruktur).
+    - Deployment: Netlify (Automated CI/CD via GitHub branch main).
+ager API berfungsi struktur folder di google drive harus mengikuti pola yang sudah di rancang yaitu:
+    1. Root Folder : folder utama
+    2. LV1 (Semester) : folder dengan nama "semester 1, semester 2" dll
+    3. LV2 (Mata Kuliah) : Folder mata kuliah di dalam folder semster
+    4. LV3 (file) : file file modul
+Alur Kerja API
+    1. (Ambil Semua Matkul):
+        - Dipicu tanpa parameter courseId.
+        - Melakukan traversal folder Semester -> Mata Kuliah.
+        -Mengambil ID Folder, Nama, nomor Semester (hasil ekstrak teks nama folder), dan jumlah file di dalamnya.
+    2. (Ambil Isi Matkul):
+        - Dipicu dengan parameter ?courseId=ID_FOLDER.
+        - Mengambil semua file di dalam folder tersebut.
+        - Mengembalikan URL preview, ukuran file (format bytes), dan MIME type.
+Alur Deployment
+- Repo : Disimpan di branch main github
+- Netlify : terhubung ke github setiap ada git push ke main netlify akan jalankan npm run build dan mulai pembaruan
